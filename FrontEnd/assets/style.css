@@ -95,9 +95,16 @@ nav li {
 	font-size: 1.2em;
 }
 
-li:hover {
+li a:hover {
 	color: #B1663C;
 }
+a {
+	text-decoration: none;
+}
+a:visited {
+	color: black;
+}
+
 #introduction {
 	display: flex;
 	align-items: center;
@@ -203,5 +210,26 @@ background-color: white;
 border: 1px solid #1D6154;
 font-family: 'Syne';
 color: #1D6154;
-cursor: pointer;
+}
+button:hover{
+	background-color: #1D6154;
+		color: white;
+}
+
+button.high{
+	background-color: #1D6154;
+	color: white;
+}
+button.low {
+	background-color: white;
+	color:#1D6154;
+}
+a{
+	text-decoration: none;
+}
+li a:hover{
+	color: #B1663C;
+}
+a:visited{
+	color: black;
 }

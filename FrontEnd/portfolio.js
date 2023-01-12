@@ -37,10 +37,12 @@ function generateFilter(categories) {
         const categoriesElement = categories[i]
         const buttonFilter = document.createElement("button")
         buttonFilter.innerText = categoriesElement.name
+        // buttonFilter.className = "low"
         buttonFilter.addEventListener('click', function () {
             const categoriesFilter = project.filter(function (project) {
                 return project.categoryId === categories[i].id
             })
+            // buttonFilter.className = "high"
             document.querySelector(".gallery").innerHTML = "";
             generateWorks(categoriesFilter);
              console.log(categoriesFilter)
