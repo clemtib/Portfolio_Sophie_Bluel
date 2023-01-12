@@ -23,15 +23,23 @@ function generateFilter(categories) {
     const buttonFilter = document.createElement("button")
     buttonFilter.innerText = "Tous"
     sectionFilter.appendChild(buttonFilter)
+    buttonFilter.addEventListener('click', function () {
+        const categoriesFilter = project
+        document.querySelector(".gallery").innerHTML = "";
+        generateWorks(categoriesFilter);
+        console.log(categoriesFilter)
+    }) 
+    sectionFilter.appendChild(buttonFilter)
+    
+    
     for (let i = 0; i < categories.length; i++) {
         
         const categoriesElement = categories[i]
         const buttonFilter = document.createElement("button")
         buttonFilter.innerText = categoriesElement.name
-        const idButton = categories[i].id
         buttonFilter.addEventListener('click', function () {
             const categoriesFilter = project.filter(function (project) {
-                return project.categoryId === idButton
+                return project.categoryId === categories[i].id
             })
             document.querySelector(".gallery").innerHTML = "";
             generateWorks(categoriesFilter);
