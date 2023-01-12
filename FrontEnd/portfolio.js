@@ -18,20 +18,20 @@ sectionPortfolio.appendChild(sectionFilter)
 
 
 
-
+let check = true;
 function generateFilter(categories) {
+    //button Init
     const buttonFilter = document.createElement("button")
     buttonFilter.innerText = "Tous"
     sectionFilter.appendChild(buttonFilter)
     buttonFilter.addEventListener('click', function () {
         const categoriesFilter = project
-        document.querySelector(".gallery").innerHTML = "";
+        // document.querySelector(".gallery").innerHTML = "";
         generateWorks(categoriesFilter);
-        console.log(categoriesFilter)
     }) 
     sectionFilter.appendChild(buttonFilter)
     
-    
+    //button categoriesFilter
     for (let i = 0; i < categories.length; i++) {
         
         const categoriesElement = categories[i]
@@ -39,13 +39,29 @@ function generateFilter(categories) {
         buttonFilter.innerText = categoriesElement.name
         // buttonFilter.className = "low"
         buttonFilter.addEventListener('click', function () {
+           
+             console.log(check)
+            if (check = !check) {
+                // this.className = "high"
+                check = !check 
+                console.log(`press ${check}`)
+            } else if (check = false){
+                // this.className = "low"
+                check = true
+                console.log(`press2 ${check}`)
+            }
+            // this.className = "low" ? "high" : "low"
+            console.log(check)
+            // toggle vert/blanc
+            // bilan
+            
             const categoriesFilter = project.filter(function (project) {
-                return project.categoryId === categories[i].id
+                return project.categoryId === categories[i].id //syntaxe pour ajouter deux valeur dans un filtre de array 
+                //si les trois sont vert 
             })
             // buttonFilter.className = "high"
-            document.querySelector(".gallery").innerHTML = "";
+            // document.querySelector(".gallery").innerHTML = "";
             generateWorks(categoriesFilter);
-             console.log(categoriesFilter)
         }) 
         sectionFilter.appendChild(buttonFilter)
     }
@@ -54,12 +70,18 @@ function generateFilter(categories) {
 
 
 function generateWorks(project) {
-    for (let i = 0;  i < project.length; i++){
+
+    document.querySelector(".gallery").remove()
+    //selection de la balise .gallery
+    //const sectionGallery = document.querySelector(".gallery")
+    const sectionGallery = document.createElement("div")
+    sectionGallery.className = 'gallery';
+    
+    for (let i = 0; i < project.length; i++){
 
         const projectElement = project[i];
        
-        //selection de la balise .gallery
-        const sectionGallery = document.querySelector(".gallery")
+
         //ajout d'un balise figure
         const galleryElement = document.createElement("figure")
         //ajout de l'image
@@ -72,16 +94,17 @@ function generateWorks(project) {
         sectionTitle.innerText = projectElement.title
 
 
-        sectionPortfolio.appendChild(sectionGallery)
-        sectionGallery.appendChild(galleryElement)
+        //sectionPortfolio.appendChild(sectionGallery)
         galleryElement.appendChild(imageElement)
         galleryElement.appendChild(sectionTitle)
-     
+        sectionGallery.appendChild(galleryElement)     
     }
+    sectionPortfolio.appendChild(sectionGallery)
 }
 
 
 generateWorks(project)
 
 generateFilter(categories)
+
 

@@ -52,6 +52,7 @@ body {
 	margin:auto;
 	font-family: 'Work Sans' ;
 	font-size: 14px;
+	background-color: #fffef8;
 }
 header {
 	display: flex;
@@ -186,7 +187,10 @@ input[type="submit"]{
 	text-align: center;
 	border-radius: 60px ;
 }
-
+footer{
+	background-color: white;
+	border: 1px solid black;
+}
 footer nav ul {
 	display: flex;
 	justify-content: flex-end;
@@ -206,7 +210,7 @@ padding: 10px;
 height: 37px;
 border-radius: 60px;
 /* border-style: none; */
-background-color: white;
+background-color: #fffef8;
 border: 1px solid #1D6154;
 font-family: 'Syne';
 color: #1D6154;
@@ -214,6 +218,7 @@ color: #1D6154;
 button:hover{
 	background-color: #1D6154;
 		color: white;
+		
 }
 
 button.high{
@@ -224,12 +229,26 @@ button.low {
 	background-color: white;
 	color:#1D6154;
 }
-a{
-	text-decoration: none;
+
+
+/*================== PAGE CONNEXION =================*/
+
+section.connexionContainer{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
-li a:hover{
-	color: #B1663C;
+form.connexion{
+	display:flex;
+	flex-direction: column;
 }
-a:visited{
-	color: black;
+.id, .mp{
+	display: flex;
+	flex-direction: column;
+}
+
+.id input,.mp input{
+	width: 380px ;
+	height: 51px;
+	margin: 5px 0;
 }
