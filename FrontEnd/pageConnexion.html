@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr">
   <head>
+    <title>Sophie Bluel - Architecte d'intérieur</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -11,9 +12,9 @@
     />
     <meta name="description" content="" />
     <link rel="stylesheet" href="./assets/style.css" />
+    <script type="module" src="connexion.js"></script>
 
     <link rel="icon" href="#" />
-    <title>Login</title>
   </head>
   <body>
     <header>
@@ -30,16 +31,13 @@
 
     <section class="connexionContainer">
       <h2>Log In</h2>
-      <form action="#" class="connexion">
-        <div class="id">
-          <label for="email">E-mail</label>
+      <form class="connexion">
+        <label for="email">E-mail</label>
 
-          <input type="text" class="connexion" />
-        </div>
-        <div class="mp">
-          <label for="password">Mot de passe</label>
-          <input type="password" class="connexion" />
-        </div>
+        <input type="text" class="connexion" name="email" />
+
+        <label for="password">Mot de passe</label>
+        <input type="password" class="connexion" name="password" />
       </form>
       <button class="connexion" class="high">Se connecter</button>
       <a href="#">Mot de passe oublié</a>
