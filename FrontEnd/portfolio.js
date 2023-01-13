@@ -18,7 +18,7 @@ sectionPortfolio.appendChild(sectionFilter)
 
 
 
-let check = true;
+
 function generateFilter(categories) {
     //button Init
     const buttonFilter = document.createElement("button")
@@ -30,7 +30,9 @@ function generateFilter(categories) {
         generateWorks(categoriesFilter);
     }) 
     sectionFilter.appendChild(buttonFilter)
-    
+    //stockage des filtres actif
+    let bilan = []
+    let bilanCategories = []
     //button categoriesFilter
     for (let i = 0; i < categories.length; i++) {
         
@@ -38,27 +40,38 @@ function generateFilter(categories) {
         const buttonFilter = document.createElement("button")
         buttonFilter.innerText = categoriesElement.name
         // buttonFilter.className = "low"
+        let check = false
+        
         buttonFilter.addEventListener('click', function () {
            
-             console.log(check)
-            if (check = !check) {
-                // this.className = "high"
-                check = !check 
-                console.log(`press ${check}`)
-            } else if (check = false){
-                // this.className = "low"
-                check = true
-                console.log(`press2 ${check}`)
-            }
-            // this.className = "low" ? "high" : "low"
-            console.log(check)
             // toggle vert/blanc
+            check = !check 
+
+            if (check) {
+                this.className = 'high'
+                bilan.push(categories[i].id)
+                bilan.sort(function (a, b) {
+                    return a - b
+                })
+            } else {
+                this.className = 'low'
+                bilan.splice(i,1)
+            }
+            console.log(bilan)
             // bilan
+
             
             const categoriesFilter = project.filter(function (project) {
-                return project.categoryId === categories[i].id //syntaxe pour ajouter deux valeur dans un filtre de array 
+                // return project.categoryId === bilan //syntaxe pour ajouter deux valeur dans un filtre de array 
+                // for (let i = 0; i < bilan.length; i++){
+                //     bilanCategories.push(bilan[i])
+                // }
+                // return project.categoryId === bilanCategories
+                return project.categoryId === categories[i].id
                 //si les trois sont vert 
             })
+            // console.log(bilanCategories)
+          
             // buttonFilter.className = "high"
             // document.querySelector(".gallery").innerHTML = "";
             generateWorks(categoriesFilter);
@@ -106,5 +119,4 @@ function generateWorks(project) {
 generateWorks(project)
 
 generateFilter(categories)
-
 
