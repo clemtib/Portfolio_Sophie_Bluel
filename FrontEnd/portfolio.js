@@ -1,3 +1,4 @@
+
 const takeProject = await fetch('http://localhost:5678/api/works')
 const project = await takeProject.json();
 
