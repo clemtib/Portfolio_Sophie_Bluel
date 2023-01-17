@@ -6,11 +6,17 @@ const takeCategories = await fetch('http://localhost:5678/api/categories')
 const categories = await takeCategories.json();
 
 
+
+
+
 //Ajout du Titre
 const sectionPortfolio = document.querySelector("#portfolio")
+const containerTitlePortfolio = document.createElement('div')
+containerTitlePortfolio.className = 'titlePortfolio'
 const titlePortfolio = document.createElement("h2")
 titlePortfolio.innerText = `Mes Projets`
-sectionPortfolio.appendChild(titlePortfolio)
+sectionPortfolio.appendChild(containerTitlePortfolio)
+containerTitlePortfolio.appendChild(titlePortfolio)
 
 //création div pour filter
 const sectionFilter = document.createElement("div")
@@ -27,13 +33,12 @@ function generateFilter(categories) {
     sectionFilter.appendChild(buttonFilter)
     buttonFilter.addEventListener('click', function () {
         const categoriesFilter = project
-        // document.querySelector(".gallery").innerHTML = "";
         generateWorks(categoriesFilter);
     }) 
     sectionFilter.appendChild(buttonFilter)
     //stockage des filtres actif
-    let bilan = []
-    let bilanCategories = []
+    // let bilan = []
+    // let bilanCategories = []
     //button categoriesFilter
     for (let i = 0; i < categories.length; i++) {
         
@@ -50,15 +55,15 @@ function generateFilter(categories) {
 
             if (check) {
                 this.className = 'high'
-                bilan.push(categories[i].id)
-                bilan.sort(function (a, b) {
-                    return a - b
-                })
+                // bilan.push(categories[i].id)
+                // bilan.sort(function (a, b) {
+                //     return a - b
+                // })
             } else {
                 this.className = 'low'
-                bilan.splice(i,1)
+                // bilan.splice(i,1)
             }
-            console.log(bilan)
+
             // bilan
 
             
@@ -116,8 +121,107 @@ function generateWorks(project) {
     sectionPortfolio.appendChild(sectionGallery)
 }
 
-
+adminLogin()
 generateWorks(project)
 
 generateFilter(categories)
+
+
+
+
+
+//Modification de la page => Home-page Edit 
+//Verifier si c'est comme ca que l'on fait ... j'ai un doute 
+function adminLogin() {
+    //modification et ajout des elements en mode EDIT
+    //il faudra remettre en mode normal quand  "click" "logout"
+    if (sessionStorage.getItem('adminId')) {
+        //Bandeau noir
+        const header = document.querySelector("header")
+        const editionMode = document.createElement("div")
+        editionMode.className = 'editionMode'
+        //Changement du style du header. Conventionel ?
+        header.style.padding = "0 0 0 0"
+        //icon + "Mode edition"
+        const iconEdition = document.createElement("i")
+        iconEdition.className = "fa-regular fa-pen-to-square fa-lg iconEdition"
+        const editionTitle = document.createElement("div")
+        editionTitle.className ="editionTitle"
+        editionTitle.innerText = "Mode édition"
+        //button "publier les changements"
+        const publishButton = document.createElement("button")
+        publishButton.innerText = "publier les changements"
+        //ajouter action pour valider les modification et les envoyer à l'API
+        //-------
+
+        //-------
+        //login to logout
+        const login = document.querySelector(".login").remove()
+        const ulNav = document.querySelector('header nav ul')
+        const logout_li = document.createElement("li")
+        const logout_a = document.createElement('a')
+        logout_a.innerText = "logout"
+        logout_a.className = "logout"
+        //suppression du token pour "logout"
+        logout_a.addEventListener('click', function () {
+            sessionStorage.clear('adminId')
+            //refresh la page html pour repartir à 0 
+            location.reload()
+        })
+
+        // icon + modifier 
+        // section#introduction figure div
+        // section#introduction article div
+        // section#portfolio div
+
+        const selectElement = ['section#introduction figure',
+            'section#introduction article',
+            'section#portfolio .titlePortfolio']
+        
+        for (let i = 0; i < selectElement.length; i++){
+            const modifElement = document.querySelector(selectElement[i])
+            const divModif = document.createElement('div')
+            divModif.className = "divModif"
+            const textModif = document.createElement('a')
+            textModif.innerText = "Modifier"
+            const iconModif = document.createElement("i")
+            iconModif.className = "fa-regular fa-pen-to-square fa-lg iconModif"
+
+            modifElement.appendChild(divModif)
+            divModif.appendChild(iconModif)
+            divModif.appendChild(textModif)
+        }
+
+        //supression des filtres
+       const filter = document.querySelector('.filter').remove()
+     
+
+
+     
+        //bloc noir
+        header.appendChild(editionMode)
+        editionMode.appendChild(editionTitle)
+        editionTitle.appendChild(iconEdition)
+        editionMode.appendChild(publishButton)
+
+        //logout
+        ulNav.appendChild(logout_li)
+        logout_li.appendChild(logout_a)
+
+        //icon + Modifier
+      
+       
+        console.log(selectElement)
+} else {
+    console.log("bye")
+}  
+}
+
+
+
+
+
+
+
+
 
