@@ -18,15 +18,19 @@ titlePortfolio.innerText = `Mes Projets`
 sectionPortfolio.appendChild(containerTitlePortfolio)
 containerTitlePortfolio.appendChild(titlePortfolio)
 
-//création div pour filter
-const sectionFilter = document.createElement("div")
-sectionFilter.className = 'filter'
-sectionPortfolio.appendChild(sectionFilter)
 
 
 
 
 function generateFilter(categories) {
+
+    // document.querySelector(".filter").remove()
+    //création div pour filter
+    const sectionFilter = document.createElement("div")
+    sectionFilter.className = 'filter'
+    sectionPortfolio.appendChild(sectionFilter)
+        
+
     //button Init
     const buttonFilter = document.createElement("button")
     buttonFilter.innerText = "Tous"
@@ -52,7 +56,7 @@ function generateFilter(categories) {
            
             // toggle vert/blanc
             check = !check 
-
+//utiliser indexOf() pour suprimer l'index corespondant au filtre
             if (check) {
                 this.className = 'high'
                 // bilan.push(categories[i].id)
@@ -121,10 +125,9 @@ function generateWorks(project) {
     sectionPortfolio.appendChild(sectionGallery)
 }
 
-adminLogin()
-generateWorks(project)
 
-generateFilter(categories)
+
+
 
 
 
@@ -134,14 +137,13 @@ generateFilter(categories)
 //Verifier si c'est comme ca que l'on fait ... j'ai un doute 
 function adminLogin() {
     //modification et ajout des elements en mode EDIT
-    //il faudra remettre en mode normal quand  "click" "logout"
     if (sessionStorage.getItem('adminId')) {
         //Bandeau noir
         const header = document.querySelector("header")
         const editionMode = document.createElement("div")
         editionMode.className = 'editionMode'
         //Changement du style du header. Conventionel ?
-        header.style.padding = "0 0 0 0"
+        header.className = 'headerEdition'
         //icon + "Mode edition"
         const iconEdition = document.createElement("i")
         iconEdition.className = "fa-regular fa-pen-to-square fa-lg iconEdition"
@@ -151,53 +153,70 @@ function adminLogin() {
         //button "publier les changements"
         const publishButton = document.createElement("button")
         publishButton.innerText = "publier les changements"
-        //ajouter action pour valider les modification et les envoyer à l'API
-        //-------
-
-        //-------
         //login to logout
-        const login = document.querySelector(".login").remove()
+        document.querySelector(".login").remove()
         const ulNav = document.querySelector('header nav ul')
         const logout_li = document.createElement("li")
+        logout_li.className = "logout"
         const logout_a = document.createElement('a')
         logout_a.innerText = "logout"
-        logout_a.className = "logout"
+       
         //suppression du token pour "logout"
         logout_a.addEventListener('click', function () {
             sessionStorage.clear('adminId')
-            //refresh la page html pour repartir à 0 
-            location.reload()
+            removeEdition()
         })
 
-        // icon + modifier 
-        // section#introduction figure div
-        // section#introduction article div
-        // section#portfolio div
-
-        const selectElement = ['section#introduction figure',
-            'section#introduction article',
-            'section#portfolio .titlePortfolio']
-        
-        for (let i = 0; i < selectElement.length; i++){
-            const modifElement = document.querySelector(selectElement[i])
-            const divModif = document.createElement('div')
-            divModif.className = "divModif"
-            const textModif = document.createElement('a')
-            textModif.innerText = "Modifier"
-            const iconModif = document.createElement("i")
-            iconModif.className = "fa-regular fa-pen-to-square fa-lg iconModif"
-
-            modifElement.appendChild(divModif)
-            divModif.appendChild(iconModif)
-            divModif.appendChild(textModif)
-        }
-
         //supression des filtres
-       const filter = document.querySelector('.filter').remove()
-     
+        document.querySelector('.filter').remove()
 
 
-     
+        //Modif figure
+        const modifFigure = document.querySelector('section#introduction figure')
+        const divFigure = document.createElement('div')
+        divFigure.className = "divModif"
+        const textFigure = document.createElement('a')
+        textFigure.innerText = "Modifier"
+        const iconFigure = document.createElement("i")
+        iconFigure.className = "fa-regular fa-pen-to-square fa-lg iconModif"
+
+        modifFigure.appendChild(divFigure)
+        divFigure.appendChild(iconFigure)
+        divFigure.appendChild(textFigure)
+
+         //Modif article
+        const modifArticle = document.querySelector('section#introduction article')
+        const divArticle = document.createElement('div')
+        divArticle.className = "divModif"
+        const textArticle = document.createElement('a')
+        textArticle.innerText = "Modifier"
+        const iconArticle = document.createElement("i")
+        iconArticle.className = "fa-regular fa-pen-to-square fa-lg iconModif"
+
+        modifArticle.appendChild(divArticle)
+        divArticle.appendChild(iconArticle)
+        divArticle.appendChild(textArticle)
+
+        //  Modif projet
+        const modifProjet = document.querySelector('section#portfolio .titlePortfolio')
+        const divProjet = document.createElement('div')
+        divProjet.className = "divModif"
+        const textProjet = document.createElement('a')
+        textProjet.innerText = "Modifier"
+        const iconProjet = document.createElement("i")
+        iconProjet.className = "fa-regular fa-pen-to-square fa-lg iconModif"
+        
+        
+        modifProjet.appendChild(divProjet)
+        divProjet.appendChild(iconProjet)
+        divProjet.appendChild(textProjet)
+
+       
+        //openModal
+        textProjet.addEventListener('click', openModal)
+
+
+
         //bloc noir
         header.appendChild(editionMode)
         editionMode.appendChild(editionTitle)
@@ -208,20 +227,100 @@ function adminLogin() {
         ulNav.appendChild(logout_li)
         logout_li.appendChild(logout_a)
 
-        //icon + Modifier
-      
-       
-        console.log(selectElement)
-} else {
-    console.log("bye")
-}  
+    } else {
+        console.log("bye")
+    }  
 }
 
+function removeEdition() {
+    
+    document.querySelector(".editionMode").remove()
+    document.querySelector("header").classList.remove('headerEdition')
+    document.querySelector(".logout").remove()
+
+    const ulNav = document.querySelector('header nav ul')
+    const login_li = document.createElement("li")
+    login_li.className = "login"
+    const login_a = document.createElement('a')
+    login_a.innerText = "login"
+    login_a.setAttribute('href', 'pageConnexion.html')
+    ulNav.appendChild(login_li)
+    login_li.appendChild(login_a)
+
+    const elementsModif = document.querySelectorAll(".divModif");
+    elementsModif.forEach(function(element) {
+    element.remove();
+    });
+
+    generateFilter(categories)
+    generateWorks(project)
+}
+
+generateFilter(categories)
+generateWorks(project)
+adminLogin()
+
+
+//====================== BOITE MODAL ======================
 
 
 
 
 
+// function openModal() {
+//     console.log('openModal')
+//     // Get the modal
+// var modal = document.getElementById("myModal");
+
+// // Get the button that opens the modal
+// var btn = document.getElementById("myBtn");
+
+// // Get the <span> element that closes the modal
+// var span = document.getElementsByClassName("close")[0];
+
+// // When the user clicks the button, open the modal 
+// btn.onclick = function() {
+//   modal.style.display = "block";
+// }
+
+// // When the user clicks on <span> (x), close the modal
+// span.onclick = function() {
+//   modal.style.display = "none";
+// }
+
+// // When the user clicks anywhere outside of the modal, close it
+// window.onclick = function(event) {
+//   if (event.target == modal) {
+//     modal.style.display = "none";
+//   }
+// }
+// }
 
 
 
+
+    // Get the modal
+const modal = document.getElementById("myModal");
+
+// Get the button that opens the modal
+// var btn = document.getElementById("myBtn");
+
+// Get the <span> element that closes the modal
+const span = document.getElementsByClassName("close")[0];
+
+
+function openModal() {
+  modal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
