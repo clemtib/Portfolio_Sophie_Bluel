@@ -90,10 +90,9 @@
       </nav>
     </footer>
 
-    <div id="myModal" class="modal">
-      <!-- Modal content -->
+    <div id="delModal" class="modal">
       <div class="modal-content">
-        <span><i class="fa-solid fa-xmark close"></i></span>
+        <div class="navModal"><i class="fa-solid fa-xmark close"></i></div>
         <div class="containerModal">
           <h3>Galerie photo</h3>
           <div class="galeryEdition"></div>
@@ -102,5 +101,48 @@
         </div>
       </div>
     </div>
+
+    <div id="addWorkModal" class="modal">
+      <div class="modal-content">
+        <div class="navModal">
+          <i class="fa-solid fa-arrow-left previous"></i>
+          <i class="fa-solid fa-xmark close"></i>
+        </div>
+
+        <div class="containerModal">
+          <h3>Ajout photo</h3>
+          <form action="/upload" method="post" enctype="multipart/form-data">
+            <label for="title">Titre:</label>
+            <input type="text" id="title" name="title" />
+            <br />
+            <label for="category">Catégorie:</label>
+            <select id="category" name="category">
+              <option value="nature">Nature</option>
+              <option value="animaux">Animaux</option>
+              <option value="ville">Ville</option>
+            </select>
+            <br />
+            <label for="image">Image:</label>
+            <input type="file" id="image" name="image" />
+            <br />
+            <input type="submit" value="Télécharger" />
+          </form>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
+
+<!-- <form action="#">
+            <label for="title">Titre</label>
+            <input type="text" />
+            <label for="category-select">Categories</label>
+            <select name="categories" id="category-select">
+              <option value=""></option>
+              <option value="dog">Dog</option>
+              <option value="cat">Cat</option>
+              <option value="hamster">Hamster</option>
+            </select>
+
+            <button class="high" id="addWorks">Valider</button>
+          </form> -->

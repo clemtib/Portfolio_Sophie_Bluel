@@ -420,14 +420,15 @@ section#portfolio .divModif {
 
 }
 
-.modal-content span{
+.modal-content .navModal{
 	box-sizing:border-box;
 	width: 100%;
 	padding: 10px;
 	display: flex;
 	flex-direction: row-reverse;
+	justify-content: space-between;
 }
-/* The Close Button */
+/* Button close */
 .close {
 
   color: #aaaaaa;
@@ -438,6 +439,19 @@ section#portfolio .divModif {
   color: #000;
   text-decoration: none;
   cursor: pointer;
+}
+
+/* Button previous */
+.previous {
+	order: 1;
+	color: #aaaaaa;
+	font-size: 25px;
+}
+
+.previous:hover {
+	color: #000;
+	text-decoration: none;
+	cursor: pointer;
 }
 
 .containerModal{
