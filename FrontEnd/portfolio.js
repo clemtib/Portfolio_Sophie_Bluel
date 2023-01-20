@@ -206,7 +206,9 @@ function adminLogin() {
         const iconProjet = document.createElement("i")
         iconProjet.className = "fa-regular fa-pen-to-square fa-lg iconModif"
          //openModal
-        textProjet.addEventListener('click', openModal)
+        textProjet.addEventListener('click', function () {
+            delModal.style.display = "block";
+        })
         
         modifProjet.appendChild(divProjet)
         divProjet.appendChild(iconProjet)
@@ -262,7 +264,40 @@ adminLogin()
 
 
 //====================== BOITE MODAL ======================
-function generateWorksEdition(project) {
+// Modal del Works 
+const delModal = document.getElementById("delModal");
+// Modal add Works
+const modal = document.getElementById("addWorkModal");
+const addWorks = document.querySelector("#addWorks")
+addWorks.addEventListener('click',function openAddModal() {
+    modal.style.display = "block";
+    delModal.style.display = "none";
+})
+// Fermer la modal avec la croix
+const closeModal = document.querySelectorAll('.close');
+closeModal.forEach(function (element) {
+    element.addEventListener('click', function () {
+        delModal.style.display = "none";
+        modal.style.display = "none";
+    })
+})
+// Revenir à la modal precedente 
+const previousModal = document.querySelector('.previous')
+previousModal.addEventListener('click', function () {
+    delModal.style.display = "block";
+    modal.style.display = "none";
+})
+// Fermer la modal quand on clic à coté
+window.onclick = function(event) {
+    if (event.target ===  delModal) {
+      delModal.style.display = "none";
+    }
+    if (event.target ===  modal) {
+    modal.style.display = "none";
+    }
+}
+
+function generateWorksEdition() {
 
     // peut etre supprimer toute les image pour les recréer pour actualiser les suppression 
     const containerModal = document.querySelector(".containerModal")
@@ -287,9 +322,27 @@ function generateWorksEdition(project) {
         sectionTitle.innerText = 'éditer'
         const trashCanIcon = document.createElement('i')
         trashCanIcon.className = 'fa-regular fa-trash-can fa-sm delIcon'
-        trashCanIcon.addEventListener('click', function () {
+        trashCanIcon.addEventListener('click', function (event) {
+            event.preventDefault()
 
-            console.log(`Supression de ${project[i].title}`)
+        const id = project[i].id
+        fetch(`http://localhost:5678/api/works/${id}`, {
+        method: "DELETE",
+
+            headers: {
+                "Content-Type": "application/json",
+                'Authorization': `Bearer ${sessionStorage.getItem('adminId')}` },
+        })
+
+            .then(function (reponse) {
+                delModal.style.display = "block"; // ne fonctionne pas
+                window.location.reload(false) // ne fonctionne pas 
+            })
+            .catch(function (error) {
+                console.log('Il y a eu un problème avec l\'operation fetch : ' + error.message)
+            })
+        
+      
         })
 
         galleryElement.appendChild(imageElement)
@@ -300,45 +353,60 @@ function generateWorksEdition(project) {
     }
     containerModal.appendChild(galleryEdition)
 }
-generateWorksEdition(project)
 
+function newWork() {
+    const inputCategory = document.querySelector('#category')
+    for (let i = 0; i < categories.length; i++){
+        const addOption = document.createElement('option')
+        addOption.setAttribute('value', categories[i].id)
+        addOption.innerText = categories[i].name   
+        inputCategory.appendChild(addOption)
+    }
+    
+    const formAddWork = document.querySelector(".addWork")
 
-// Modal del Works 
-const delModal = document.getElementById("delModal");
-//addevent au niveau des bouton "modifier"
-function openModal() {
-    delModal.style.display = "block";
-}
+    formAddWork.addEventListener("submit", function (event) {
+        event.preventDefault()
 
-// Modal add Works
-const modal = document.getElementById("addWorkModal");
-const addWorks = document.querySelector("#addWorks")
-addWorks.addEventListener('click',function openAddModal() {
-    modal.style.display = "block";
-    delModal.style.display = "none";
-})
+        const formData = new FormData();
 
-const closeModal = document.querySelectorAll('.close');
-closeModal.forEach(function (element) {
-    element.addEventListener('click', function () {
-        delModal.style.display = "none";
-        modal.style.display = "none";
+        // formData.append("image", event.target.querySelector("[name=image]").files[0]);
+        // formData.append("title", event.target.querySelector("[name=title]").value);
+        // formData.append("category", event.target.querySelector("[name=category]").value);
+        
+        fetch("http://localhost:5678/api/works", {
+        method: "POST",
+        headers: {
+            "accept": "application/json",
+            // "Content-Type": "multipart/form-data",
+            'Authorization': `Bearer ${sessionStorage.getItem('adminId')}`
+        },
+        body: formData
+        })
+        // .then(response => response.json())
+        // .catch(error => console.log(error))
+    //     console.log(chargeUtile)
+    //     fetch('http://localhost:5678/api/works', {
+            
+    //         method: "POST",
+    //         headers: {
+    //             "accept": "application/json",
+    //             "Content-Type": "multipart/form-data",
+    //             'Authorization': `Bearer ${sessionStorage.getItem('adminId')}`
+    //         },
+    //         body: chargeUtile
+    //     })
+    //     .catch(function (error) {
+    //     console.log('Il y a eu un problème avec l\'opération fetch : ' + error.message)
+    // })
     })
-})
-const previousModal = document.querySelector('.previous')
-previousModal.addEventListener('click', function () {
-    delModal.style.display = "block";
-    modal.style.display = "none";
-})
-// Si clic en dehors de la modal => display = "none"
-window.onclick = function(event) {
-    if (event.target ===  delModal) {
-      delModal.style.display = "none";
-    }
-    if (event.target ===  modal) {
-    modal.style.display = "none";
-    }
 }
+
+
+generateWorksEdition()
+newWork()
+
+
 
 
 

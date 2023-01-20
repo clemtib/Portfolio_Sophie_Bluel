@@ -19,7 +19,7 @@ formLogin.addEventListener('submit', function(event){
             "Accept": "application/json"
         },
         body: chargeUtile
-    })       
+    })  
     .then(function (reponse) {
         if (reponse.ok) {
             // document.location.href="index.html"
@@ -40,7 +40,7 @@ formLogin.addEventListener('submit', function(event){
     .catch(function (error) {
     console.log('Il y a eu un problème avec l\'opération fetch : ' + error.message)
     })
-   
+
    
 })
 
