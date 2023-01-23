@@ -368,7 +368,7 @@ function newWork() {
     formAddWork.addEventListener("submit", function (event) {
         event.preventDefault()
 
-        const formData = new FormData();
+        const formData = new FormData(formAddWork);
 
         // formData.append("image", event.target.querySelector("[name=image]").files[0]);
         // formData.append("title", event.target.querySelector("[name=title]").value);
@@ -383,29 +383,40 @@ function newWork() {
         },
         body: formData
         })
-        // .then(response => response.json())
-        // .catch(error => console.log(error))
-    //     console.log(chargeUtile)
-    //     fetch('http://localhost:5678/api/works', {
-            
-    //         method: "POST",
-    //         headers: {
-    //             "accept": "application/json",
-    //             "Content-Type": "multipart/form-data",
-    //             'Authorization': `Bearer ${sessionStorage.getItem('adminId')}`
-    //         },
-    //         body: chargeUtile
-    //     })
-    //     .catch(function (error) {
-    //     console.log('Il y a eu un problème avec l\'opération fetch : ' + error.message)
-    // })
+            .then(function () {
+             modal.style.display = "none";
+        })
+
     })
 }
+
+const fileInput = document.getElementById("image")
+const upPicture = document.getElementById("upPictur")
+const preview = document.getElementById('preview')
+const elementFile = document.getElementById('elementFile')
+
+
+upPicture.addEventListener('click', function (event) {
+    event.preventDefault()
+    fileInput.click()
+})
+
+  fileInput.addEventListener("change", function() {
+    var reader = new FileReader();
+    reader.onload = function() {
+      var img = document.createElement("img");
+      img.src = reader.result;
+      preview.appendChild(img);
+    };
+      reader.readAsDataURL(fileInput.files[0]);
+      elementFile.style.display = "none"
+    
+  });
+
 
 
 generateWorksEdition()
 newWork()
-
 
 
 

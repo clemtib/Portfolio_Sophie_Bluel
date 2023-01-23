@@ -519,3 +519,185 @@ h3{
 
 	
 }
+
+
+ .addWork{
+    margin-top: 50px;
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+
+.inputForm{
+    width: 100%;
+    padding-bottom: 20px ;
+    display: flex;  
+    flex-direction: column;
+    align-items: center;
+    border-bottom: 1px solid #B3B3B3;
+} 
+/* .imageUp{
+    display: none;
+} */
+
+ #preview img {
+    height: 175px;  
+ }
+
+.depotImage{
+    background-color: #E8F1F6 ;
+    border-radius: 3px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 440px;
+height: 175px;
+    margin-bottom: 20px;
+}
+#elementFile{
+    padding: 10px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.land{
+    color: #B9C5CC;
+    font-size:58px;
+    margin: 15px;
+}
+
+#upPictur{
+    background-color: #CBD6DC ;
+    color: #306685 ;
+    border: none;
+    padding: 0 30px;
+    font-family: 'Work Sans';
+    font-size: 14px;
+}
+
+#extention{
+    font-size: 10px;
+    margin: 10px 0;
+}
+
+#title, select{
+    box-sizing: content-box;
+    width: 440px;
+    height: 50px;
+    border-radius: 0;
+    border: none;
+    background-color: #ffffff;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.17);
+    margin-bottom: 25px;
+    
+}
+
+.inputForm label{
+    width: 100%;
+    margin: 10px;
+}
+
+#validation{
+    background-color: #A7A7A7;
+    width: 237px;
+    height: 36px;
+    border: none;
+    cursor: pointer;
+}
+#validation:hover{
+    background-color: #1D6154;
+    color: white;
+} 
+
+
+ .addWork{
+    margin-top: 50px;
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+
+.inputForm{
+    width: 100%;
+    padding-bottom: 20px ;
+    display: flex;  
+    flex-direction: column;
+    align-items: center;
+    border-bottom: 1px solid #B3B3B3;
+} 
+ .imageUp{
+    display: none;
+} 
+
+#preview img {
+    height: 175px;  
+ }
+
+.depotImage{
+    background-color: #E8F1F6 ;
+    border-radius: 3px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 440px;
+height: 175px;
+    margin-bottom: 20px;
+}
+#elementFile{
+    padding: 10px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.land{
+    color: #B9C5CC;
+    font-size:58px;
+    margin: 15px;
+}
+
+#upPictur{
+    background-color: #CBD6DC ;
+    color: #306685 ;
+    border: none;
+    padding: 0 30px;
+    font-family: 'Work Sans';
+    font-size: 14px;
+}
+
+#extention{
+    font-size: 10px;
+    margin: 10px 0;
+}
+
+#title, select{
+    box-sizing: content-box;
+    width: 440px;
+    height: 50px;
+    border-radius: 0;
+    border: none;
+    background-color: #ffffff;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.17);
+    margin-bottom: 25px;
+    
+}
+
+.inputForm label{
+    width: 100%;
+    margin: 10px;
+}
+
+#validation{
+    background-color: #A7A7A7;
+    width: 237px;
+    height: 36px;
+    border: none;
+    cursor: pointer;
+}
+#validation:hover{
+    background-color: #1D6154;
+    color: white;
+} 
