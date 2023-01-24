@@ -1,13 +1,9 @@
 
 const takeProject = await fetch('http://localhost:5678/api/works')
-const project = await takeProject.json();
+let project = await takeProject.json();
 
 const takeCategories = await fetch('http://localhost:5678/api/categories')
 const categories = await takeCategories.json();
-
-
-
-
 
 //Ajout du Titre
 const sectionPortfolio = document.querySelector("#portfolio")
@@ -19,29 +15,34 @@ sectionPortfolio.appendChild(containerTitlePortfolio)
 containerTitlePortfolio.appendChild(titlePortfolio)
 
 
-
-
-
 function generateFilter(categories) {
+    const buttonInit = document.querySelectorAll('.filter button')
+    buttonInit.forEach(element => element.remove())
 
     //création div pour filter
     const sectionFilter = document.createElement("div")
     sectionFilter.className = 'filter'
     sectionPortfolio.appendChild(sectionFilter)
         
-
-    //button Init
-    const buttonFilter = document.createElement("button")
-    buttonFilter.innerText = "Tous"
-    sectionFilter.appendChild(buttonFilter)
-    buttonFilter.addEventListener('click', function () {
-        const categoriesFilter = project
-        generateWorks(categoriesFilter);
+    //button All
+    const buttonFilterAll = document.createElement("button")
+    buttonFilterAll.innerText = "Tous"
+    buttonFilterAll.className = "high"
+    buttonFilterAll.addEventListener('click', function () {
+        const buttonInit = document.querySelectorAll('.filter button')
+            buttonInit.forEach(element => element.className = 'low')
+            buttonFilterAll.className = "high"
+            generateFilter(categories)
+            generateWorks(project);
+        
     }) 
-    sectionFilter.appendChild(buttonFilter)
+    sectionFilter.appendChild(buttonFilterAll)
     //stockage des filtres actif
-    // let bilan = []
-    // let bilanCategories = []
+    let bilan = []
+    let bilanCategories = []
+    let categoriesFilter = []
+
+    
     //button categoriesFilter
     for (let i = 0; i < categories.length; i++) {
         
@@ -50,46 +51,63 @@ function generateFilter(categories) {
         buttonFilter.innerText = categoriesElement.name
         // buttonFilter.className = "low"
         let check = false
-        
+       
         buttonFilter.addEventListener('click', function () {
            
+            console.log('check befor', check)
             // toggle vert/blanc
             check = !check 
-//utiliser indexOf() pour suprimer l'index corespondant au filtre
+            console.log('check after', check)
             if (check) {
                 this.className = 'high'
-                // bilan.push(categories[i].id)
-                // bilan.sort(function (a, b) {
-                //     return a - b
-                // })
+                bilan.push(categories[i].id)
+                bilan.sort(function (a, b) {
+                    return a - b
+                })
+                console.log(i)
+                console.log(bilan)
+                categoriesFilter = project.filter(project => project.categoryId === i + 1)
+                bilanCategories.push(...categoriesFilter)
+                // buttonFilterAll.className = "low"
+                
             } else {
                 this.className = 'low'
-                // bilan.splice(i,1)
+                let target = bilan.indexOf(categories[i].id)
+                bilan.splice(target, 1)
+                console.log(i)
+                console.log(bilan)
+                console.log(`target = ${target}`)
+                categoriesFilter = project.filter(project => project.categoryId === i + 1)
+                console.log('else', categoriesFilter)
+
+                for (let i = 0; i < bilanCategories.length; i++) {
+                    if (categoriesFilter.includes(bilanCategories[i])) {
+                    bilanCategories.splice(i, 1);
+                    i--;
+                    }
+                }         
             }
+             if (bilan == false) {
+                buttonFilterAll.className = "high"
+            } else if(bilan.length === categories.length){
+                const buttonInit = document.querySelectorAll('.filter button')
+                buttonInit.forEach(element => element.className = 'low')
+                buttonFilterAll.className = "high"
+                generateFilter(categories)
+                generateWorks(project);
 
-            // bilan
-
-            
-            const categoriesFilter = project.filter(function (project) {
-                // return project.categoryId === bilan //syntaxe pour ajouter deux valeur dans un filtre de array 
-                // for (let i = 0; i < bilan.length; i++){
-                //     bilanCategories.push(bilan[i])
-                // }
-                // return project.categoryId === bilanCategories
-                return project.categoryId === categories[i].id
-                //si les trois sont vert 
-            })
-            // console.log(bilanCategories)
+             } else {
+                buttonFilterAll.className = "low"
+            }
           
-            // buttonFilter.className = "high"
-            // document.querySelector(".gallery").innerHTML = "";
-            generateWorks(categoriesFilter);
+            console.log(bilanCategories)
+            generateWorks(bilanCategories);
         }) 
         sectionFilter.appendChild(buttonFilter)
-    }
+
+        
+    }    
 }
-
-
 
 function generateWorks(project) {
 
@@ -124,16 +142,7 @@ function generateWorks(project) {
     sectionPortfolio.appendChild(sectionGallery)
 }
 
-
-
-
-
-
-
-
-
 //Modification de la page => Home-page Edit 
-//Verifier si c'est comme ca que l'on fait ... j'ai un doute 
 function adminLogin() {
     //modification et ajout des elements en mode EDIT
     if (sessionStorage.getItem('adminId')) {
@@ -299,10 +308,13 @@ window.onclick = function(event) {
 
 function generateWorksEdition() {
 
+    document.querySelector('.galeryEdition').remove()
     // peut etre supprimer toute les image pour les recréer pour actualiser les suppression 
     const containerModal = document.querySelector(".containerModal")
+    const galleryEdition = document.createElement("div")
+    galleryEdition.className = "galeryEdition"
    
-    const galleryEdition = document.querySelector(".galeryEdition")
+    
     
     for (let i = 0; i < project.length; i++){
 
@@ -335,8 +347,16 @@ function generateWorksEdition() {
         })
 
             .then(function (reponse) {
-                delModal.style.display = "block"; // ne fonctionne pas
-                window.location.reload(false) // ne fonctionne pas 
+                fetch('http://localhost:5678/api/works')
+                .then(response => response.json())
+                .then(newProject => {
+                project = [ ...newProject];
+                generateWorks(project);
+                
+                //j'appel la fonction dans la fonction ...?
+                generateWorksEdition()
+            })
+            .catch(error => console.log(error));
             })
             .catch(function (error) {
                 console.log('Il y a eu un problème avec l\'operation fetch : ' + error.message)
@@ -383,12 +403,41 @@ function newWork() {
         },
         body: formData
         })
-            .then(function () {
-             modal.style.display = "none";
-        })
+         .then((function (reponse) {
+            if(reponse.ok){
+            console.log('Envoie valide')
+            } else {
+                alert("Le Formulaire est incorect, verifier la saisie")
+            }
+            }
+            )
+        )
+       .then(() => {
+           fetch('http://localhost:5678/api/works')
+           
+                .then(response => response.json())
+                
+                .then(newProject => {
+                    project = [...newProject];
+                    const input = document.querySelector("input[type=file]");
+                    input.value = ""
+                    document.querySelector('#preview img').remove()
+                    document.getElementById('elementFile').style.display = "flex"
+                generateWorks(project);
+                
+                generateWorksEdition()
+            })
+                .catch(error => {
+                    console.log(error)
+                    
 
+                });
+       })
+            
     })
 }
+
+//mettre dans une fonction ?
 
 const fileInput = document.getElementById("image")
 const upPicture = document.getElementById("upPictur")
@@ -412,8 +461,6 @@ upPicture.addEventListener('click', function (event) {
       elementFile.style.display = "none"
     
   });
-
-
 
 generateWorksEdition()
 newWork()
