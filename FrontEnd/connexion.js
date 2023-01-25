@@ -1,5 +1,3 @@
-
-
 const formLogin = document.querySelector('.connexion')
 
 formLogin.addEventListener('submit', function(event){
@@ -43,29 +41,4 @@ formLogin.addEventListener('submit', function(event){
 
    
 })
-
-
-
-
-
-//  .then(async function (reponse) {
-//             if (reponse.ok) {
-//                 reponse = await reponse.json()
-//                 sessionStorage.setItem('adminId', reponse.token)
-//                 document.location.href = "index.html"
-                
-//                 console.log(sessionStorage.getItem('adminId'))
-            
-//             } else {
-//                 window.alert("identification ou mot de passe eronné")
-                
-             
-//         }
-//         })
-//         .catch(function (error) {
-//         console.log('Il y a eu un problème avec l\'opération fetch : ' + error.message)
-//         })
-   
-               
- 
 

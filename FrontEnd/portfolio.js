@@ -5,7 +5,7 @@ let project = await takeProject.json();
 const takeCategories = await fetch('http://localhost:5678/api/categories')
 const categories = await takeCategories.json();
 
-//Ajout du Titre
+//Ajout du Titre "Mes Projet"
 const sectionPortfolio = document.querySelector("#portfolio")
 const containerTitlePortfolio = document.createElement('div')
 containerTitlePortfolio.className = 'titlePortfolio'
@@ -13,8 +13,9 @@ const titlePortfolio = document.createElement("h2")
 titlePortfolio.innerText = `Mes Projets`
 sectionPortfolio.appendChild(containerTitlePortfolio)
 containerTitlePortfolio.appendChild(titlePortfolio)
+//
 
-
+//Genere les button filter et filtre les travaux/categories
 function generateFilter(categories) {
     const buttonInit = document.querySelectorAll('.filter button')
     buttonInit.forEach(element => element.remove())
@@ -68,9 +69,10 @@ function generateFilter(categories) {
                 console.log(bilan)
                 categoriesFilter = project.filter(project => project.categoryId === i + 1)
                 bilanCategories.push(...categoriesFilter)
-                // buttonFilterAll.className = "low"
+                // buttonFilterAll.className = "low" 
                 
             } else {
+                //si je click sur Objet et je rapuis dessus le "tous" sa
                 this.className = 'low'
                 let target = bilan.indexOf(categories[i].id)
                 bilan.splice(target, 1)
@@ -79,7 +81,7 @@ function generateFilter(categories) {
                 console.log(`target = ${target}`)
                 categoriesFilter = project.filter(project => project.categoryId === i + 1)
                 console.log('else', categoriesFilter)
-
+               
                 for (let i = 0; i < bilanCategories.length; i++) {
                     if (categoriesFilter.includes(bilanCategories[i])) {
                     bilanCategories.splice(i, 1);
@@ -89,19 +91,21 @@ function generateFilter(categories) {
             }
              if (bilan == false) {
                 buttonFilterAll.className = "high"
+                generateWorks(project)
             } else if(bilan.length === categories.length){
                 const buttonInit = document.querySelectorAll('.filter button')
                 buttonInit.forEach(element => element.className = 'low')
                 buttonFilterAll.className = "high"
                 generateFilter(categories)
-                generateWorks(project);
+                generateWorks(project)
 
              } else {
                 buttonFilterAll.className = "low"
+                console.log(bilanCategories)
+                generateWorks(bilanCategories);
             }
           
-            console.log(bilanCategories)
-            generateWorks(bilanCategories);
+           
         }) 
         sectionFilter.appendChild(buttonFilter)
 
@@ -109,6 +113,7 @@ function generateFilter(categories) {
     }    
 }
 
+//GenerelLes travaux enregistré
 function generateWorks(project) {
 
     document.querySelector(".gallery").remove()
@@ -142,10 +147,10 @@ function generateWorks(project) {
     sectionPortfolio.appendChild(sectionGallery)
 }
 
-//Modification de la page => Home-page Edit 
-function adminLogin() {
+//Creation du mode Edition 
+function toLogin() {
     //modification et ajout des elements en mode EDIT
-    if (sessionStorage.getItem('adminId')) {
+    
         //Bandeau noir
         const header = document.querySelector("header")
         const editionMode = document.createElement("div")
@@ -172,7 +177,7 @@ function adminLogin() {
         //suppression du token pour "logout"
         logout_a.addEventListener('click', function () {
             sessionStorage.clear('adminId')
-            removeEdition()
+            toLogout()
         })
 
         //supression des filtres
@@ -223,11 +228,6 @@ function adminLogin() {
         divProjet.appendChild(iconProjet)
         divProjet.appendChild(textProjet)
 
-       
-       
-
-
-
         //bloc noir
         header.appendChild(editionMode)
         editionMode.appendChild(editionTitle)
@@ -237,13 +237,10 @@ function adminLogin() {
         //logout
         ulNav.appendChild(logout_li)
         logout_li.appendChild(logout_a)
-
-    } else {
-        console.log("bye")
-    }  
 }
 
-function removeEdition() {
+//Retour sur la page LogIn
+function toLogout() {
     
     document.querySelector(".editionMode").remove()
     document.querySelector("header").classList.remove('headerEdition')
@@ -269,47 +266,53 @@ function removeEdition() {
 
 generateFilter(categories)
 generateWorks(project)
-adminLogin()
+
+// Pour rentrer dans le Mode Edition
+if (sessionStorage.getItem('adminId')) {
+    toLogin()
+}
 
 
-//====================== BOITE MODAL ======================
-// Modal del Works 
-const delModal = document.getElementById("delModal");
-// Modal add Works
-const modal = document.getElementById("addWorkModal");
-const addWorks = document.querySelector("#addWorks")
-addWorks.addEventListener('click',function openAddModal() {
-    modal.style.display = "block";
-    delModal.style.display = "none";
-})
-// Fermer la modal avec la croix
-const closeModal = document.querySelectorAll('.close');
-closeModal.forEach(function (element) {
-    element.addEventListener('click', function () {
+//Crée les boite modal et la navigation à l'interieur
+function generateModal() {
+    // Modal del Works 
+    const delModal = document.getElementById("delModal");
+    // Modal add Works
+    const modal = document.getElementById("addWorkModal");
+    const addWorks = document.querySelector("#addWorks")
+    addWorks.addEventListener('click',function openAddModal() {
+        modal.style.display = "block";
         delModal.style.display = "none";
+    })
+    // Fermer la modal avec la croix
+    const closeModal = document.querySelectorAll('.close');
+    closeModal.forEach(function (element) {
+        element.addEventListener('click', function () {
+            delModal.style.display = "none";
+            modal.style.display = "none";
+        })
+    })
+    // Revenir à la modal precedente 
+    const previousModal = document.querySelector('.previous')
+    previousModal.addEventListener('click', function () {
+        delModal.style.display = "block";
         modal.style.display = "none";
     })
-})
-// Revenir à la modal precedente 
-const previousModal = document.querySelector('.previous')
-previousModal.addEventListener('click', function () {
-    delModal.style.display = "block";
-    modal.style.display = "none";
-})
-// Fermer la modal quand on clic à coté
-window.onclick = function(event) {
-    if (event.target ===  delModal) {
-      delModal.style.display = "none";
-    }
-    if (event.target ===  modal) {
-    modal.style.display = "none";
+    // Fermer la modal quand on clic à coté
+    window.onclick = function(event) {
+        if (event.target ===  delModal) {
+        delModal.style.display = "none";
+        }
+        if (event.target ===  modal) {
+        modal.style.display = "none";
+        }
     }
 }
 
-function generateWorksEdition() {
+//Envoie une requete à l'API pour ajouter un nouveau projet
+function worksInModal() {
 
     document.querySelector('.galeryEdition').remove()
-    // peut etre supprimer toute les image pour les recréer pour actualiser les suppression 
     const containerModal = document.querySelector(".containerModal")
     const galleryEdition = document.createElement("div")
     galleryEdition.className = "galeryEdition"
@@ -354,7 +357,7 @@ function generateWorksEdition() {
                 generateWorks(project);
                 
                 //j'appel la fonction dans la fonction ...?
-                generateWorksEdition()
+                worksInModal()
             })
             .catch(error => console.log(error));
             })
@@ -404,10 +407,11 @@ function newWork() {
         body: formData
         })
          .then((function (reponse) {
-            if(reponse.ok){
-            console.log('Envoie valide')
+             if (reponse.ok) {
+                 //Reponse de l'API
+                console.log(reponse.status, reponse.statusText)
             } else {
-                alert("Le Formulaire est incorect, verifier la saisie")
+                alert("Le formulaire est incorrect, verifier la saisie")
             }
             }
             )
@@ -416,7 +420,7 @@ function newWork() {
            fetch('http://localhost:5678/api/works')
            
                 .then(response => response.json())
-                
+                    
                 .then(newProject => {
                     project = [...newProject];
                     const input = document.querySelector("input[type=file]");
@@ -425,7 +429,7 @@ function newWork() {
                     document.getElementById('elementFile').style.display = "flex"
                 generateWorks(project);
                 
-                generateWorksEdition()
+                worksInModal()
             })
                 .catch(error => {
                     console.log(error)
@@ -437,13 +441,11 @@ function newWork() {
     })
 }
 
-//mettre dans une fonction ?
-
+//Crée la preview du loaded 
 const fileInput = document.getElementById("image")
 const upPicture = document.getElementById("upPictur")
 const preview = document.getElementById('preview')
 const elementFile = document.getElementById('elementFile')
-
 
 upPicture.addEventListener('click', function (event) {
     event.preventDefault()
@@ -461,8 +463,10 @@ upPicture.addEventListener('click', function (event) {
       elementFile.style.display = "none"
     
   });
+//
 
-generateWorksEdition()
+generateModal ()
+worksInModal()
 newWork()
 
 
