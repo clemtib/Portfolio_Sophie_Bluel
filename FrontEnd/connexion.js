@@ -20,7 +20,7 @@ formLogin.addEventListener('submit', function(event){
     })  
     .then(function (reponse) {
         if (reponse.ok) {
-            // document.location.href="index.html"
+            
             reponse.json()
             .then(function (reponse) {
                 sessionStorage.setItem('adminId', reponse.token)

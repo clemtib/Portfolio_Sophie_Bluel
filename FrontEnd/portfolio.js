@@ -17,6 +17,7 @@ containerTitlePortfolio.appendChild(titlePortfolio)
 
 //Genere les button filter et filtre les travaux/categories
 function generateFilter(categories) {
+    //reset les bouttons des filtres 
     const buttonInit = document.querySelectorAll('.filter button')
     buttonInit.forEach(element => element.remove())
 
@@ -25,7 +26,7 @@ function generateFilter(categories) {
     sectionFilter.className = 'filter'
     sectionPortfolio.appendChild(sectionFilter)
         
-    //button All
+    //button "Tous"
     const buttonFilterAll = document.createElement("button")
     buttonFilterAll.innerText = "Tous"
     buttonFilterAll.className = "high"
@@ -42,7 +43,6 @@ function generateFilter(categories) {
     let bilan = []
     let bilanCategories = []
     let categoriesFilter = []
-
     
     //button categoriesFilter
     for (let i = 0; i < categories.length; i++) {
@@ -54,11 +54,9 @@ function generateFilter(categories) {
         let check = false
        
         buttonFilter.addEventListener('click', function () {
-           
-            console.log('check befor', check)
-            // toggle vert/blanc
+
             check = !check 
-            console.log('check after', check)
+
             if (check) {
                 this.className = 'high'
                 bilan.push(categories[i].id)
@@ -69,10 +67,8 @@ function generateFilter(categories) {
                 console.log(bilan)
                 categoriesFilter = project.filter(project => project.categoryId === i + 1)
                 bilanCategories.push(...categoriesFilter)
-                // buttonFilterAll.className = "low" 
                 
             } else {
-                //si je click sur Objet et je rapuis dessus le "tous" sa
                 this.className = 'low'
                 let target = bilan.indexOf(categories[i].id)
                 bilan.splice(target, 1)
@@ -103,22 +99,17 @@ function generateFilter(categories) {
                 buttonFilterAll.className = "low"
                 console.log(bilanCategories)
                 generateWorks(bilanCategories);
-            }
-          
-           
+            }           
         }) 
         sectionFilter.appendChild(buttonFilter)
-
-        
     }    
 }
 
-//GenerelLes travaux enregistré
 function generateWorks(project) {
 
+    //rest les images de la gallerie
     document.querySelector(".gallery").remove()
-    //selection de la balise .gallery
-    //const sectionGallery = document.querySelector(".gallery")
+
     const sectionGallery = document.createElement("div")
     sectionGallery.className = 'gallery';
     
@@ -138,8 +129,6 @@ function generateWorks(project) {
         const sectionTitle = document.createElement("figcaption")
         sectionTitle.innerText = projectElement.title
 
-
-        //sectionPortfolio.appendChild(sectionGallery)
         galleryElement.appendChild(imageElement)
         galleryElement.appendChild(sectionTitle)
         sectionGallery.appendChild(galleryElement)     
