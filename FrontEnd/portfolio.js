@@ -137,7 +137,7 @@ function generateWorks(project) {
 }
 
 //Creation du mode Edition 
-function toLogin() {
+function editPage() {
     //modification et ajout des elements en mode EDIT
     
         //Bandeau noir
@@ -258,9 +258,8 @@ generateWorks(project)
 
 // Pour rentrer dans le Mode Edition
 if (sessionStorage.getItem('adminId')) {
-    toLogin()
+    editPage()
 }
-
 
 //Crée les boite modal et la navigation à l'interieur
 function generateModal() {
