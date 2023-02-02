@@ -63,8 +63,6 @@ function generateFilter(categories) {
                 bilan.sort(function (a, b) {
                     return a - b
                 })
-                console.log(i)
-                console.log(bilan)
                 categoriesFilter = project.filter(project => project.categoryId === i + 1)
                 bilanCategories.push(...categoriesFilter)
                 
@@ -72,11 +70,7 @@ function generateFilter(categories) {
                 this.className = 'low'
                 let target = bilan.indexOf(categories[i].id)
                 bilan.splice(target, 1)
-                console.log(i)
-                console.log(bilan)
-                console.log(`target = ${target}`)
                 categoriesFilter = project.filter(project => project.categoryId === i + 1)
-                console.log('else', categoriesFilter)
                
                 for (let i = 0; i < bilanCategories.length; i++) {
                     if (categoriesFilter.includes(bilanCategories[i])) {
@@ -97,7 +91,6 @@ function generateFilter(categories) {
 
              } else {
                 buttonFilterAll.className = "low"
-                console.log(bilanCategories)
                 generateWorks(bilanCategories);
             }           
         }) 
@@ -332,7 +325,7 @@ function worksInModal() {
         fetch(`http://localhost:5678/api/works/${id}`, {
         method: "DELETE",
 
-            headers: {
+        headers: {
                 "Content-Type": "application/json",
                 'Authorization': `Bearer ${sessionStorage.getItem('adminId')}` },
         })
@@ -394,17 +387,17 @@ function newWork() {
         },
         body: formData
         })
-         .then((function (reponse) {
-             if (reponse.ok) {
-                 //Reponse de l'API
-                console.log(reponse.status, reponse.statusText)
-            } else {
-                alert("Le formulaire est incorrect, verifier la saisie")
-            }
-            }
+        .then((function (reponse) {
+                if (reponse.ok) {
+                    //Reponse de l'API
+                    console.log(reponse.status, reponse.statusText)
+                } else {
+                    alert("Le formulaire est incorrect, verifier la saisie")
+                }
+        }
             )
         )
-       .then(() => {
+        .then(() => {
            fetch('http://localhost:5678/api/works')
            
                 .then(response => response.json())

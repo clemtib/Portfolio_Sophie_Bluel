@@ -4,11 +4,11 @@ formLogin.addEventListener('submit', function(event){
 
     event.preventDefault()
 
-    const login ={
+    let login ={
         email: event.target.querySelector("#signin-email").value,
         password: event.target.querySelector("#signin-password").value,
     }
-    const chargeUtile = JSON.stringify(login)
+    login = JSON.stringify(login)
     fetch("http://localhost:5678/api/users/login", {
        
         method: "POST",
@@ -16,7 +16,7 @@ formLogin.addEventListener('submit', function(event){
             "Content-Type": "application/json",
             "Accept": "application/json"
         },
-        body: chargeUtile
+        body: login
     })  
     .then(function (reponse) {
         if (reponse.ok) {
